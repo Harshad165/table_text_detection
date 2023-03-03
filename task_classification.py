@@ -40,7 +40,7 @@ def task_classification(img):
 						min_line_length, max_line_gap)
 
 	if (hlines is None):
-		return img
+		return (img, 0, 0)
 
 	minY = 100000
 	maxY = 0
@@ -61,8 +61,9 @@ def task_classification(img):
 				# cv2.line(img,(x1,y1),(x2,y2),(0,255,0),5)
 
 	if (len(final_hlines) == 0):
-		return img
+		return (img, 0, 0)
 
+	minY = minY-10
 	#Cropping
 	img = img[minY:maxY,:]
 	edges = edges[minY:maxY,:]
@@ -93,16 +94,30 @@ def task_classification(img):
 				final_vlines.append(line)
 				# cv2.line(img,(x1,y1),(x2,y2),(255,0,0),5)
 
+	final_vlines = sorted(final_vlines, key=lambda line: line[0][0])
+	prev_x = 0
+	output_vlines = []
 	for line in final_vlines:
 		(x1,y1,x2,y2) = line[0]
 		x_mean = int(np.mean([x1, x2]))
+		if abs(x_mean - prev_x) <= 10:
+			continue
+		output_vlines.append(line)
 		img[:, x_mean-3: x_mean+3] = 255
+		prev_x = x_mean
 
+	final_hlines = sorted(final_hlines, key=lambda line: line[0][1])
+	prev_y = 0
+	output_hlines = []
 	for line in final_hlines:
 		(x1,y1,x2,y2) = line[0]
 		y_mean = int(np.mean([y1, y2])) - minY
 		if y_mean < 0 or y_mean > maxY-minY:
 			continue
+		if abs(y_mean - prev_y) <= 3:
+			continue
+		output_hlines.append([[x1,y1-minY,x2,y2-minY]])
 		img[y_mean-3: y_mean+3, :] = 255
+		prev_y = y_mean
 
-	return img
+	return (img, len(output_hlines), len(output_vlines))

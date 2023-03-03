@@ -208,7 +208,7 @@ def get_text(rows, img):
         cv2.imwrite(f'./data/header_cropped_{idx}.png', cropped)
         # return
         header_text = pytesseract.image_to_string(cropped, config="--psm 10").strip()
-        print("header_text: " + header_text)
+        # print("header_text: " + header_text)
 
         table_data[header_text] = []
         for ridx,row in enumerate(rows[1:]):
@@ -218,29 +218,46 @@ def get_text(rows, img):
             cropped1 = cv2.resize(cropped1, (cropped1.shape[1]*2, cropped1.shape[0]*2))
             cv2.imwrite(f'./data/header_{ridx}_{idx}_.png', cropped1)
             text = pytesseract.image_to_string(cropped1, config="--psm 10").strip()
-            print(idx, text)
+            # print(idx, text)
             table_data[header_text].append(text)
-    print(table_data)
+    return table_data
 
     
 
                 
 if __name__ == "__main__":
-    path = os.path.join("./data", "inp4.jpg")
+    path = os.path.join("./data", "inp3.png")
     img = cv2.imread(path)
-    img = task_classification.task_classification(img)
-    # img = img[:int(img.shape[1]*0.8), :]
-
     pre_file = os.path.join("./data", "pre.png")
     out_file = os.path.join("./data", "out.png")
 
-    pre_processed = pre_process_image(img, pre_file)
-    show_all_boxes(pre_processed)
-    show_filered_boxes(pre_processed, img)
-    text_boxes = find_text_boxes(pre_processed)
-    rows = find_table_cells(text_boxes)
-    get_text(rows, img)
-    # print(table_cells)
+    type_2 = False
+    while True:
+        (classified, numHLines, numVLines) = task_classification.task_classification(img)
+        pre_processed = pre_process_image(classified, pre_file)
+        show_all_boxes(pre_processed)
+        show_filered_boxes(pre_processed, img)
+        text_boxes = find_text_boxes(pre_processed)
+        rows = find_table_cells(text_boxes)
+        if len(rows) == 1:
+            img = classified[:int(img.shape[0]*0.8), :]
+            type_2 = True
+        else:
+            img = classified
+            break
+    table_data = get_text(rows, img)
+    numCols = len(table_data.keys())
+    numRows = len(rows)
+
+    if type_2:
+        print('Type 2')
+    elif(numRows+1 == numHLines):
+        print('Type 1')
+    elif(numHLines > 0):
+        print('Type 3')
+    else:
+        print('Type 4')
+
     draw_boxes(img, rows, os.path.join("./data", "table_boxes.png"))  
     cells = find_table_in_boxes(text_boxes)
     hor_lines, ver_lines = build_lines(cells)
@@ -257,3 +274,4 @@ if __name__ == "__main__":
         cv2.line(vis, (x1, y1), (x2, y2), (0, 0, 255), 1)
 
     cv2.imwrite(out_file, vis)
+    print(table_data)
