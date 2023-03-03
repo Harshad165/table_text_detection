@@ -208,7 +208,6 @@ def get_text(rows, img):
         cv2.imwrite(f'./data/header_cropped_{idx}.png', cropped)
         # return
         header_text = pytesseract.image_to_string(cropped, config="--psm 10").strip()
-        # print("header_text: " + header_text)
 
         table_data[header_text] = []
         for ridx,row in enumerate(rows[1:]):
@@ -218,7 +217,6 @@ def get_text(rows, img):
             cropped1 = cv2.resize(cropped1, (cropped1.shape[1]*2, cropped1.shape[0]*2))
             cv2.imwrite(f'./data/header_{ridx}_{idx}_.png', cropped1)
             text = pytesseract.image_to_string(cropped1, config="--psm 10").strip()
-            # print(idx, text)
             table_data[header_text].append(text)
     return table_data
 
@@ -226,7 +224,7 @@ def get_text(rows, img):
 
                 
 if __name__ == "__main__":
-    path = os.path.join("./data", "inp3.png")
+    path = os.path.join("./data", "inp4.jpg")
     img = cv2.imread(path)
     pre_file = os.path.join("./data", "pre.png")
     out_file = os.path.join("./data", "out.png")
