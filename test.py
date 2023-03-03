@@ -1,7 +1,7 @@
 import os
 import cv2
-import imutils
 import pytesseract
+import task_classification
 
 # This only works if there's only one table on a page
 # Important parameters:
@@ -13,9 +13,9 @@ import pytesseract
 
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
-delta = 5
+delta = 0
 
-def pre_process_image(img, save_in_file, morph_size=(10, 3)):
+def pre_process_image(img, save_in_file, morph_size=(10, 2)):
 
     # get rid of the color
     pre = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -39,7 +39,7 @@ def show_all_boxes(pre, min_text_height_limit=6, max_text_height_limit=40):
 
     for contour in contours:
         (x,y,w,h) = cv2.boundingRect(contour)
-        cv2.rectangle(temp, (x, y), (x + w, y + h), (0,255,0), 4)
+        cv2.rectangle(temp, (x, y), (x + w, y + h), (0,255,0), 1)
 
     cv2.imwrite(os.path.join("./data", "boxes.jpg"), temp)
 
@@ -182,15 +182,17 @@ def draw_boxes(img, rows, path):
     
 
 def overlap(box1, box2):
-    y1 = box1[1]
-    y2 = box1[1] + box1[3]
+    box1_y2 = box1[1] + box1[3]
+    box2_y1 = box2[1]
+    overlap_y1 = min(box1_y2, box2_y1)
+    overlap_y2 = max(box1_y2, box2_y1)
+    overlap_len = overlap_y2 - overlap_y1
 
-    if y1 <= box2[1] and box2[1] <= y2:
-        return True
-    if y1 <= box2[1] + box2[3] and box2[1] + box2[3] <= y2:
-        return True
-    
-    return False
+    if (overlap_y1 == box1_y2):
+        return False
+    if overlap_len <= 0.25*min(box1[3], box2[3]):
+        return False
+    return True
 
 def get_text(rows, img):
     im = img.copy()
@@ -224,11 +226,13 @@ def get_text(rows, img):
 
                 
 if __name__ == "__main__":
-    in_file = os.path.join("./data", "out2.png")
+    path = os.path.join("./data", "inp4.jpg")
+    img = cv2.imread(path)
+    img = task_classification.task_classification(img)
+    # img = img[:int(img.shape[1]*0.8), :]
+
     pre_file = os.path.join("./data", "pre.png")
     out_file = os.path.join("./data", "out.png")
-
-    img = cv2.imread(os.path.join(in_file))
 
     pre_processed = pre_process_image(img, pre_file)
     show_all_boxes(pre_processed)
@@ -237,19 +241,12 @@ if __name__ == "__main__":
     rows = find_table_cells(text_boxes)
     get_text(rows, img)
     # print(table_cells)
-    draw_boxes(img, rows, os.path.join("./data", "table_boxes.png"))
-
-    
-
+    draw_boxes(img, rows, os.path.join("./data", "table_boxes.png"))  
     cells = find_table_in_boxes(text_boxes)
     hor_lines, ver_lines = build_lines(cells)
 
     # Visualize the result
     vis = img.copy()
-
-    # for box in text_boxes:
-    #     (x, y, w, h) = box
-    #     cv2.rectangle(vis, (x, y), (x + w - 2, y + h - 2), (0, 255, 0), 1)
 
     for line in hor_lines:
         [x1, y1, x2, y2] = line
