@@ -34,6 +34,7 @@ def filter_hlines(hlines, imgH):
 			maxY = max(maxY, y_mean)
 		if (y_mean > imgH*0.1) and (y_mean < imgH*0.9):
 			(x1,y1,x2,y2) = line[0]
+			np.seterr(divide='ignore')
 			slope = abs(np.arctan((y2-y1)/(x2-x1)))		
 			if slope<=(np.pi/6):
 				final_hlines.append(line)
@@ -47,7 +48,7 @@ def filter_vlines(vlines, imgW):
 			x_mean = int(np.mean([x1, x2]))
 			if (x_mean < imgW*0.05) or (x_mean > 0.95*imgW):
 				continue
-			
+			np.seterr(divide='ignore')
 			slope = abs(np.arctan((y2-y1)/(x2-x1)))		
 			if slope>=(np.pi/3) and slope<=(2*np.pi/3):
 				final_vlines.append(line)
