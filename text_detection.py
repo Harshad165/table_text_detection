@@ -216,7 +216,7 @@ def get_text(rows, img):
 
                 
 if __name__ == "__main__":
-    path = os.path.join("./data", "inp4.jpg")
+    path = os.path.join("./data/input_images", "inp4.jpg")
     img = cv2.imread(path)
     pre_file = os.path.join("./data", "pre.png")
     out_file = os.path.join("./data", "out.png")

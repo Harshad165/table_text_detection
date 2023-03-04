@@ -19,6 +19,34 @@ To use this code, follow these steps:
     Place your input image in the same directory as the text_detection.py file.
     Run the script: python text_detection.py, change the input image in the main function of this code to get the output.
 
+## Input
+    The text_detection.py takes the different types of images from ./Data/input_images as input
+
+## Output
+    In the ./Data folder, I have added images to show the preprocessed images, bouding boxes which are given as input to the pytesseract library to find the text, the input being sent to the text_detection through the pipeline.
+
+    Input: Type_1
+    Output: Type 1
+    {'QTY': ['1', '2', '3'], 'DESCRIPTION': ['Front and rear brake cables', 'New set of pedal arms', 'Labor Shrs'], 'UNIT PRICE': ['100.00', '15.00', '§.00'], 'AMOUNT.': ['100.00', '30.00', '15.00']}
+
+    Input: Type_2
+    Output: Type 2
+    {'DESCRIPTION': ['Service Fee', 'Labor: 5 hours at $75-hr', 'Nee client discount', 'Tax (4.25% after discount'], 'AMOUNT': ['299:33', '37539', '(53.93', '26']}
+
+    Input: Type_3
+    Output: Type 3
+    {'Q': ['1', '2', '3'], 'DESCRIPTION': ['Front and rear brake cables', 'New set of pedal arms.', 'Labor 3hrs'], 'UNIT PRIGE': ['100.00', '15.00', '§.00'], 'AMOUNT': ['100.00', '30.00', '15.00']}
+
+    Input: Type_4
+    Output: Type 4
+    {'ITEMS': ['ITEM 1', 'JTEM 2', 'ITEM 3', 'ITEM 4', 'ITEM 5', 'ITEM 6'], 'DESCRIPTION': ['Description', 'Description', 'Description', 'Description', 'Description', 'Description'], 'QUANTITY': ['1', '1', '1', '1', '1', '1'], 'PRICE': ['$000.00', '$000.00', '$000.00', '$000.00', '$000.00', '$000.00'], 'TAX': ['1%', '1%', '1%', '1%', '1%', '1%'], 'AMOUNT': ['$000.00', '$000.00', '$000.00', '$000.00', '$000.00', '$000.00']}
+
+As we can see from the bouding boxes, for all types of images the bouding boxes which I have drew for this algorithm are correct but the output is not a 100% accurate due to unclear images and limitations of pytesseract library, We can try to improve the image quality by using image processing techniques or by using other ocr libraries to see if there is an improvement in performance. 
+
+Bouding_boxes example on Type_1 image.
+
+<!-- ![alt text](http://url/to/img.png) -->
+
 ## task_classification.py 
 
 The code performs table detection on an input image using computer vision techniques. The process can be divided into the following steps:
