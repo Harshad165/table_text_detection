@@ -41,9 +41,9 @@ To use this code, follow these steps:
     Output: Type 4
     {'ITEMS': ['ITEM 1', 'JTEM 2', 'ITEM 3', 'ITEM 4', 'ITEM 5', 'ITEM 6'], 'DESCRIPTION': ['Description', 'Description', 'Description', 'Description', 'Description', 'Description'], 'QUANTITY': ['1', '1', '1', '1', '1', '1'], 'PRICE': ['$000.00', '$000.00', '$000.00', '$000.00', '$000.00', '$000.00'], 'TAX': ['1%', '1%', '1%', '1%', '1%', '1%'], 'AMOUNT': ['$000.00', '$000.00', '$000.00', '$000.00', '$000.00', '$000.00']}
 
-As we can see from the bouding boxes, for all types of images the bouding boxes which I have drew for this algorithm are correct but the output is not a 100% accurate due to unclear images and limitations of pytesseract library, We can try to improve the image quality by using image processing techniques or by using other ocr libraries to see if there is an improvement in performance. 
+As we can see from the bouding boxes below, for all types of images the bouding boxes which I have drew for this algorithm are correct but the output is not a 100% accurate due to unclear images and limitations of pytesseract library, We can try to improve the image quality by using image processing techniques or by using other ocr libraries to see if there is an improvement in performance. 
 
-<!-- Bouding_boxes example on Type_1 image. -->
+Bouding_boxes example on Type_1 image.
 
 ![Bouding_boxes example on Type_1 image](https://github.com/Harshad165/table_text_detection/blob/main/data/Bouding_Boxes/Type_1/table_boxes.png)
 
