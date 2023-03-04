@@ -43,9 +43,9 @@ To use this code, follow these steps:
 
 As we can see from the bouding boxes, for all types of images the bouding boxes which I have drew for this algorithm are correct but the output is not a 100% accurate due to unclear images and limitations of pytesseract library, We can try to improve the image quality by using image processing techniques or by using other ocr libraries to see if there is an improvement in performance. 
 
-Bouding_boxes example on Type_1 image.
+<!-- Bouding_boxes example on Type_1 image. -->
 
-<!-- ![alt text](http://url/to/img.png) -->
+![Bouding_boxes example on Type_1 image](https://github.com/Harshad165/table_text_detection/blob/main/data/Bouding_Boxes/Type_1/table_boxes.png)
 
 ## task_classification.py 
 
