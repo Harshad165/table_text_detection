@@ -3,7 +3,7 @@ import numpy as np
 
 def line_detection(edges, threshold, min_line_length):
 		rho = 1  # distance resolution in pixels of the Hough grid
-		theta = np.pi / 180  # angular resolution in radians of the Hough grid
+		theta = np.pi / 180 # angular resolution in radians of the Hough grid
 		max_line_gap = 20  # maximum gap in pixels between connectable line segments
 
 		# Run Hough on edge detected image
@@ -112,4 +112,4 @@ def task_classification(img):
 		(output_vlines, img) = combine_nearby_vlines(final_vlines, img)
 		(output_hlines, img) = combine_nearby_hlines(final_hlines, img, minY, maxY)
 
-		return (img, len(output_hlines), len(output_vlines))
+		return (img, len(output_hlines), len(output_vlines))	

@@ -3,20 +3,12 @@ import cv2
 import pytesseract
 import task_classification
 
-# This only works if there's only one table on a page
-# Important parameters:
-#  - morph_size
-#  - min_text_height_limit
-#  - max_text_height_limit
-#  - cell_threshold
-#  - min_columns
-
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
 delta = 0
 
-def pre_process_image(img, save_in_file, morph_size=(10, 2)):
 
+def pre_process_image(img, save_in_file, morph_size=(10, 2)):
     # get rid of the color
     pre = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # Otsu threshold
